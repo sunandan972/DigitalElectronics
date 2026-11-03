@@ -1,48 +1,31 @@
-# Build the circuits in Logisim Evolution
+# Build in Logisim Evolution
 
-Create two circuits: `ALU4` and `ProgramCounter4`.
+Create a circuit named `Max_Selector_2bit`.
 
-## A. ALU4
+## Inputs and outputs
+Inputs: `A1`, `A0`, `B1`, `B0`.
+Outputs: `G`, `C1`, `C0`.
 
-### Pins
-Inputs: A3..A0, B3..B0, M.
-Outputs: F3..F0, Cout.
+## Comparator
+Implement:
+`G = (A1 AND NOT B1) OR ((A1 XNOR B1) AND A0 AND NOT B0)`
 
-### Components
-- One 4-bit adder (Arithmetic → Adder; set Data Bits to 4).
-- Four 2-input XOR gates.
-- One constant or wire for the adder carry-in controlled by M.
-- Splitters to route the four B bits through XOR gates and into the adder.
-- LEDs/probes for F3..F0 and Cout.
+Use:
+- NOT gates for `B1` and `B0`.
+- AND gate for `A1 AND NOT B1`.
+- XNOR gate for `A1` and `B1`.
+- AND gate for `A0 AND NOT B0`.
+- AND gate for `HEQ AND LGT`.
+- OR gate to combine `HGT` and the second term.
 
-### Connections
-1. Connect A directly to adder input A.
-2. Connect each B bit to one XOR gate.
-3. Connect M to the other input of all four XOR gates.
-4. Connect XOR outputs to adder input B.
-5. Connect M to adder carry-in.
-6. Observe sum output as F and carry output as Cout.
+## Two-bit MUX
+For each bit i=0,1:
+`Ci = (G AND Ai) OR (NOT G AND Bi)`
 
-If your Logisim version's adder exposes carry-in as a separate pin, connect M there. If it does not, construct the adder from full-adder stages.
+Build each MUX bit from two AND gates and one OR gate, sharing the inverter for G.
 
-## B. ProgramCounter4
+## Testing
+Use Logisim input pins or switches for A1,A0,B1,B0. Attach probes or LEDs to G,C1,C0. Test all 16 combinations from the CSV truth table. Capture screenshots from your own Logisim session.
 
-### Pins
-Inputs: CLK, RESET, EN.
-Outputs: Q3..Q0.
-
-### Components
-- Four D flip-flops, each configured for rising-edge triggering.
-- A 4-bit incrementer (or a 4-bit adder with constant 0001).
-- A 2:1 mux for each D input, or equivalent gates.
-- A reset-priority path.
-
-### Required next-state logic
-`D = RESET ? 0000 : (EN ? Q + 0001 : Q)`
-
-Connect the same clock to all four D flip-flops. Connect each D output to its corresponding Q output. Use RESET to select zero first; otherwise EN selects incremented value or feedback Q. Probe Q3..Q0.
-
-## Simulation
-- ALU: toggle M and enter the test values from `Design/test_plan.md`.
-- PC: pulse the clock after setting RESET and EN. Test reset, count, hold and wraparound.
-- Save screenshots from your own running Logisim window; do not label reference diagrams as actual Logisim captures.
+## Width and signedness
+Set the inputs as unsigned 2-bit values. If you choose a wider bus or signed values, the comparator implementation must be changed accordingly.
