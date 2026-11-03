@@ -1,16 +1,48 @@
-# Build the circuit in Logisim Evolution
+# Build the circuits in Logisim Evolution
 
-This folder contains the implementation recipe rather than a falsely-labelled simulator screenshot or unverified `.circ` file.
+Create two circuits: `ALU4` and `ProgramCounter4`.
 
-1. Create a circuit named `Parking_Barrier_Controller`.
-2. Place two rising-edge D flip-flops. Label their Q outputs `Q1` and `Q0`.
-3. Add input pins `V`, `P`, `T`, `O`, and `RESET`; add one shared clock.
-4. Build the two next-state networks from the equations in `README.md`.
-5. Connect `D1` and `D0` to the D inputs.
-6. Connect RESET to asynchronous clear (verify polarity), or implement synchronous reset by forcing D1=D0=0 when RESET=1.
-7. Build the four output equations from `README.md`.
-8. Add LEDs/output pins for MO, MC, G, C.
-9. Use the test sequences in `Simulation_Outputs/expected_results.md`.
-10. Save as `Parking_Barrier_Controller.circ` and capture genuine screenshots from the running Logisim window.
+## A. ALU4
 
-Important: the timer-complete signal `T` is manually driven in this basic model. A practical timed controller needs a timer circuit that restarts on entry to each phase.
+### Pins
+Inputs: A3..A0, B3..B0, M.
+Outputs: F3..F0, Cout.
+
+### Components
+- One 4-bit adder (Arithmetic → Adder; set Data Bits to 4).
+- Four 2-input XOR gates.
+- One constant or wire for the adder carry-in controlled by M.
+- Splitters to route the four B bits through XOR gates and into the adder.
+- LEDs/probes for F3..F0 and Cout.
+
+### Connections
+1. Connect A directly to adder input A.
+2. Connect each B bit to one XOR gate.
+3. Connect M to the other input of all four XOR gates.
+4. Connect XOR outputs to adder input B.
+5. Connect M to adder carry-in.
+6. Observe sum output as F and carry output as Cout.
+
+If your Logisim version's adder exposes carry-in as a separate pin, connect M there. If it does not, construct the adder from full-adder stages.
+
+## B. ProgramCounter4
+
+### Pins
+Inputs: CLK, RESET, EN.
+Outputs: Q3..Q0.
+
+### Components
+- Four D flip-flops, each configured for rising-edge triggering.
+- A 4-bit incrementer (or a 4-bit adder with constant 0001).
+- A 2:1 mux for each D input, or equivalent gates.
+- A reset-priority path.
+
+### Required next-state logic
+`D = RESET ? 0000 : (EN ? Q + 0001 : Q)`
+
+Connect the same clock to all four D flip-flops. Connect each D output to its corresponding Q output. Use RESET to select zero first; otherwise EN selects incremented value or feedback Q. Probe Q3..Q0.
+
+## Simulation
+- ALU: toggle M and enter the test values from `Design/test_plan.md`.
+- PC: pulse the clock after setting RESET and EN. Test reset, count, hold and wraparound.
+- Save screenshots from your own running Logisim window; do not label reference diagrams as actual Logisim captures.
