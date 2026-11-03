@@ -1,0 +1,8 @@
+# Sequential D flip-flop test. Columns: D CLK Q <set> <seq>
+D CLK Q <set> <seq>
+0 0 0 1 1
+1 1 1 1 2
+0 0 1 1 3
+0 1 0 1 4
+1 0 0 1 5
+1 1 1 1 6

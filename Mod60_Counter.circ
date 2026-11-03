@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="3.5.0" version="1.0">
+This file is intended to be loaded by Logisim-evolution.
+<lib desc="#Wiring" name="0"><tool name="Pin"><a name="appearance" val="NewPins"/></tool><tool name="Clock"><a name="facing" val="east"/></tool></lib>
+<lib desc="#Gates" name="1"/><lib desc="#Plexers" name="2"/><lib desc="#Arithmetic" name="3"/>
+<lib desc="#Memory" name="4"><tool name="Counter"><a name="appearance" val="logisim_evolution"/></tool></lib>
+<lib desc="#I/O" name="5"/><lib desc="#TTL" name="6"/><lib desc="#TCL" name="7"/><lib desc="#Base" name="8"/>
+<main name="Mod60_Counter"/><options><a name="gateUndefined" val="ignore"/><a name="simlimit" val="1000"/><a name="simrand" val="0"/></options>
+<toolbar><tool lib="8" name="Poke Tool"/><tool lib="8" name="Edit Tool"/><tool lib="8" name="Wiring Tool"/><sep/><tool lib="0" name="Clock"/><tool lib="4" name="Counter"><a name="appearance" val="logisim_evolution"/></tool></toolbar>
+<circuit name="Mod60_Counter">
+<a name="appearance" val="logisim_evolution"/><a name="circuit" val="Mod60_Counter"/><a name="clabel" val="Mod-60 Counter — Digital Clock Seconds"/><a name="clabelfont" val="SansSerif bold 16"/>
+<comp lib="0" loc="(100,150)" name="Pin"><a name="label" val="CLK"/><a name="labelloc" val="west"/></comp>
+<comp lib="4" loc="(260,150)" name="Counter"><a name="appearance" val="logisim_evolution"/><a name="width" val="6"/><a name="max" val="0x3B"/><a name="label" val="COUNT 00-59"/></comp>
+<comp lib="0" loc="(430,150)" name="Pin"><a name="facing" val="west"/><a name="output" val="true"/><a name="width" val="6"/><a name="radix" val="unsigned"/><a name="label" val="COUNT[5:0]"/></comp>
+<wire from="(100,150)" to="(100,210)"/><wire from="(100,210)" to="(260,210)"/><wire from="(300,150)" to="(430,150)"/>
+</circuit></project>
